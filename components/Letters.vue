@@ -2,12 +2,20 @@
 
 import { LettersStore, ScoreStore } from '~/stores'
 import { EStatus } from '~/types'
+import { toSvg } from 'html-to-image'
 
 const letters = LettersStore().letters
 
-const chooseLetter = (letter: string) => {
+const dataUrl = ref('')
+
+const chooseLetter = async (letter: string) => {
 	if (ScoreStore().getGameStatus === EStatus.IN_PROGRESS) {
 		LettersStore().chooseLetter(letter)
+		return
+	} else {
+		const button = document.getElementById('runGame')
+		dataUrl.value = await toSvg(button)
+		flash.value?.show()
 	}
 }
 
@@ -27,10 +35,13 @@ const computedLetterClasses = computed(() => {
 	return (letter: string) => {
 		return {
 			// 'bg-puerto-rico': isLetterOk.value(letter),
-			'bg-gray-700': isLetterNotOk.value(letter),
+			// 'bg-gray-700': isLetterNotOk.value(letter),
+			'border-white/30 text-white/30': isLetterOk.value(letter) || isLetterNotOk.value(letter),
 		}
 	}
 })
+
+const flash = ref(null)
 
 </script>
 
@@ -50,10 +61,26 @@ const computedLetterClasses = computed(() => {
 				{{ letter }}
 				<BadgesCheck
 					v-if="isLetterOk(letter)"
-					class="absolute top-[-5px] right-[-5px]"
+					class="absolute top-[-8px] right-[-8px]"
 				/>
 			</button>
 		</div>
+
+		<LayoutFlash
+			ref="flash"
+			:duration="5000"
+		>
+			<div
+				class="text-left bg-black/75 p-[16px] rounded-[8px] max-w-[500px]"
+			>
+				<p class="font-900">Aucun jeu en cours</p>
+				<p>Tu dois lancer une partie en cliquant sur le bouton <img
+					:src="dataUrl"
+					alt='Bouton "Commencer"'
+					class="w-[100px] inline"
+				></p>
+			</div>
+		</LayoutFlash>
 
 	</LayoutContainer>
 </template>

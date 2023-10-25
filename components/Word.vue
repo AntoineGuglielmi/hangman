@@ -32,13 +32,14 @@ const runGame = () => {
 	<LayoutContainer>
 
 		<div
-			class="flex justify-center gap-[0.3rem]"
+			class="flex justify-center"
 		>
 
 			<button
 				v-if="!currentWord"
 				class="bg-white text-black rounded-full py-[8px] px-[16px]"
 				@click.prevent="runGame()"
+				id="runGame"
 			>
 				Commencer
 			</button>
@@ -55,7 +56,7 @@ const runGame = () => {
 					<template
 						v-if="letter === '-'"
 					>
-						{{ letter }}
+						<p>{{ letter }}</p>
 					</template>
 
 					<template
@@ -63,20 +64,20 @@ const runGame = () => {
 					>
 						<div
 							v-if="!gameIsLost"
-							class="h-[2px] w-full bg-gray-700 self-end"
+							class="h-[2px] w-[80%] bg-gray-700 self-end"
 						/>
 						<div
 							v-else
-							class="text-white bg-red-500 w-full h-full flex justify-center items-center"
+							class="text-white bg-black/50 w-full h-full flex justify-center items-center rounded-[8px]"
 						>
-							{{ letter }}
+							<p>{{ letter }}</p>
 						</div>
 					</template>
 
 					<template
 						v-else
 					>
-						{{ letter }}
+						<p>{{ letter }}</p>
 					</template>
 
 				</div>

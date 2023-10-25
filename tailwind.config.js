@@ -5,8 +5,14 @@ const fontWeightPlugin = plugin(function ({ addUtilities, theme }) {
     acc[`.font-${value}`] = { fontWeight: value }
     return acc
   }, {})
-
   addUtilities(utilities)
+})
+
+const bpPlugin = plugin(function ({ addVariant, theme }) {
+  Object.entries(theme('screens')).map(([key, value]) => {
+    console.log(`bp${value.replace('px', '')}`)
+    addVariant(`bp${value.replace('px', '')}`, `@media (min-width: ${value})`)
+  })
 })
 
 const colors = {
@@ -83,7 +89,8 @@ export default {
   },
   plugins: [
 
-    fontWeightPlugin
+    fontWeightPlugin,
+    bpPlugin
 
   ],
 }

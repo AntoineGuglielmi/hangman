@@ -3,5 +3,13 @@
 @tailwind utilities;
 
 html {
-  @apply font-body bg-gradient-to-r from-fuel-yellow to-cerise text-white text-center
+  @apply font-body text-white text-center
+}
+
+body {
+  @apply bg-gradient-to-r from-fuel-yellow to-cerise min-h-screen pb-[5rem]
+}
+
+input {
+  @apply outline-none
 }

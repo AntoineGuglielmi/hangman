@@ -5,6 +5,7 @@ interface IWordsStore {
   getCurrentWord: ComputedRef<string>
   setCurrentWord: () => void
   wordIsComplete: ComputedRef<boolean>
+  submitSuggestedWord: (suggestedWord: string) => void
 }
 
 export const WordsStore = defineStore('words', (): IWordsStore => {
@@ -118,15 +119,25 @@ export const WordsStore = defineStore('words', (): IWordsStore => {
     currentWord.value = pickAWord()
   }
 
-  const pickAWord = () => {
-    const currentDifficulty = DifficultyStore().getCurrentDifficulty
-    const randomIndex = Math.floor(Math.random() * words[currentDifficulty.name].length)
-    return StringHelper().removeAccents(words[currentDifficulty.name][randomIndex]).toUpperCase()
+  const pickAWord = (forceWord?: string) => {
+    let word
+    if (!forceWord) {
+      const currentDifficulty = DifficultyStore().getCurrentDifficulty
+      const randomIndex = Math.floor(Math.random() * words[currentDifficulty.name].length)
+      word = words[currentDifficulty.name][randomIndex]
+    } else {
+      word = forceWord
+    }
+    return StringHelper().removeAccents(word).toUpperCase()
   }
 
   const wordIsComplete = computed(() => {
     return StringHelper().diffChars(currentWord.value, LettersStore().lettersOk.join()).length === 0
   })
+
+  const submitSuggestedWord = (suggestedWord: string) => {
+    currentWord.value = pickAWord(suggestedWord)
+  }
 
   return {
     //GETTERS
@@ -135,6 +146,7 @@ export const WordsStore = defineStore('words', (): IWordsStore => {
 
     //SETTERS
     setCurrentWord,
+    submitSuggestedWord
   }
 
 })
