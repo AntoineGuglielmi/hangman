@@ -4,7 +4,12 @@ import { DifficultyStore, WordsStore, LettersStore } from '~/stores'
 
 const currentDifficulty = ref(DifficultyStore().getCurrentDifficulty)
 
-const setCurrentDifficulty = (difficulty: { name: string }) => {
+const setCurrentDifficulty = async (difficulty: { name: string }) => {
+	const poursuivre = await modal.value?.show()
+	console.log({
+		poursuivre,
+	});
+	return
 	if (currentDifficulty.value.name === difficulty.name) return
 	DifficultyStore().setCurrentDifficulty(difficulty)
 	// WordsStore().setCurrentWord()
@@ -17,6 +22,8 @@ const computedActiveClasses = (difficulty: { name: string }) => {
 		'hover:bg-white hover:text-black': currentDifficulty.value.name !== difficulty.name,
 	}
 }
+
+const modal = ref(null)
 
 </script>
 
@@ -53,6 +60,12 @@ const computedActiveClasses = (difficulty: { name: string }) => {
 			</form>
 
 		</div>
+
+		<LayoutModal
+			ref="modal"
+		>
+
+		</LayoutModal>
 
 	</LayoutContainer>
 </template>
