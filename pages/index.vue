@@ -26,11 +26,11 @@ const victory = computed(() => {
 		v-if="victory"
 		autoplay
 		loop
-		class="fixed top-0 left-0 w-full"
+		class="fixed top-0 left-0 w-full -z-10"
 	></video>
 
 	<section
-		class="flex flex-col gap-[3rem]"
+		class="flex flex-col gap-[3rem] relative z-10"
 	>
 		<Difficulty/>
 
